@@ -42,7 +42,7 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 
 
 :find-msvc
-@where MSBuild.exe && exit /b 0
+@if defined VisualStudioVersion exit /b 0
 :: VS150COMNTOOLS only defined in developer command prompts, so search default install locations for VS2017
 @if defined ProgramFiles(x86) for /d %%e in ("%ProgramFiles(x86)%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
 @if defined ProgramFiles      for /d %%e in      ("%ProgramFiles%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
@@ -61,7 +61,8 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 :find-msvc-path
 @set "VCVARSALL_BAT=%~1"
 @if not exist "%VCVARSALL_BAT%" exit /b 1
-@call "%VCVARSALL_BAT%" %VCVARSALL_ARCH%
+call "%VCVARSALL_BAT%" %VCVARSALL_ARCH%
+@echo on
 @exit /b %ERRORLEVEL%
 
 :infer-bgfx-vs20nn
