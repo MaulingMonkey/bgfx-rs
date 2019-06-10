@@ -47,17 +47,13 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 @if defined ProgramFiles(x86) for /d %%e in ("%ProgramFiles(x86)%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
 @if defined ProgramFiles      for /d %%e in      ("%ProgramFiles%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
 :: VS140COMNTOOLS is sometimes defined in general cmd.exe instances, but not on appveyor?  (VS2015)
-@if defined VS140COMNTOOLS      call :find-msvc-at "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
-@if defined ProgramFiles(x86)   call :find-msvc-at    "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
-                                call :find-msvc-at "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
-@if defined ProgramFiles        call :find-msvc-at         "%ProgramFiles%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
-                                call :find-msvc-at       "C:\Program Files\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
+@if defined VS140COMNTOOLS      call :find-msvc-path "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles(x86)   call :find-msvc-path    "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles        call :find-msvc-path         "%ProgramFiles%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
 :: VS2013
-@if defined VS120COMNTOOLS      call :find-msvc-at "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
-@if defined ProgramFiles(x86)   call :find-msvc-at    "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
-                                call :find-msvc-at "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
-@if defined ProgramFiles        call :find-msvc-at         "%ProgramFiles%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
-                                call :find-msvc-at       "C:\Program Files\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
+@if defined VS120COMNTOOLS      call :find-msvc-path "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles(x86)   call :find-msvc-path    "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles        call :find-msvc-path         "%ProgramFiles%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
 :: VS2012, 2010, 2008
 @echo Couldn't find MSVC installation to build BGFX with
 @exit /b 1
@@ -70,7 +66,9 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 
 :find-msvc-path
 @set "VCVARSALL_BAT=%~1"
+@echo Checking %VCVARSALL_BAT%...
 @if not exist "%VCVARSALL_BAT%" exit /b 1
+@echo Found MSVC install at %VCVARSALL_BAT%!
 call "%VCVARSALL_BAT%" %VCVARSALL_ARCH%
 @echo on
 @exit /b %ERRORLEVEL%
