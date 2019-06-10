@@ -16,29 +16,28 @@ This may also end up unmaintained, but let's give it a shot anyways.
 Platforms
 ---------
 
-| OS            | Target                    | Requirements                                                      | Recommended   |
-|-------------- |-------------------------- |------------------------------------------------------------------ |-------------- |
-| Windows       | *-pc-windows-msvc [1]     | [Rust](https://rustup.rs/), [VS2017, VS2015, or VS2013](https://visualstudio.microsoft.com/vs/older-downloads/) with the standard C++ tools [2].  | [VS Code](https://code.visualstudio.com/)
-| Windows       | *-pc-windows-gnu [1]      | [Rust](https://rustup.rs/), MinGW?, [Some GnuWin32 Utilities](https://bkaradzic.github.io/bgfx/build.html#windows)                                | [VS Code](https://code.visualstudio.com/)
-| Linux         | *-unknown-linux-gnu [1]   | [Rust](https://rustup.rs/), G++ 4.8?, Make, [OpenGL and X11](https://bkaradzic.github.io/bgfx/build.html#linux) dev packages                      |
-| Windows UWP   |                           | Rust and BGFX have support, needs implementing though.            |
-| Android       |                           | Rust and BGFX have support, needs implementing though.            |
-| iOS           |                           | Rust and BGFX have support, needs implementing though.            |
-| OS X          |                           | Rust and BGFX have support, needs implementing though.            |
-| Windows Phone |                           | BGFX has support, but Microsoft has sunset this platform.         |
+| OS            | Requirements                                                      |
+|-------------- |------------------------------------------------------------------ |
+| Windows (MSVC)| [Rust](https://rustup.rs/), [VS2017, VS2015, or VS2013](https://visualstudio.microsoft.com/vs/older-downloads/) with the standard C++ tools [1].  |
+| Windows (GNU) | [Rust](https://rustup.rs/), MinGW?, [Some GnuWin32 Utilities](https://bkaradzic.github.io/bgfx/build.html#windows)                                |
+| Linux         | [Rust](https://rustup.rs/), G++ 4.8?, Make, [OpenGL and X11](https://bkaradzic.github.io/bgfx/build.html#linux) dev packages                      |
+| Windows UWP   | Rust and BGFX have support, needs implementing though.            |
+| Android       | Rust and BGFX have support, needs implementing though.            |
+| iOS           | Rust and BGFX have support, needs implementing though.            |
+| OS X          | Rust and BGFX have support, needs implementing though.            |
+| Windows Phone | BGFX has support, but Microsoft has sunset this platform.         |
 
-1) x86_64 or i686
-2) The x86 compiler may require an opt-in individual component in some VS versions.
-3) See also [bgfx's build docs](https://bkaradzic.github.io/bgfx/build.html).  `bx`, `bimg`, and `genie` dependencies can be ignored as they're handled via submodules.
+1) The x86 compiler may require an opt-in individual component in some VS versions.
+2) See also [bgfx's build docs](https://bkaradzic.github.io/bgfx/build.html).  `bx`, `bimg`, and `genie` dependencies can be ignored as they're handled via submodules.
 
-
+For working on this project, I also recommend grabbing [Git], [VS Code], and installing the workspace recommended extensions, [rust-lang.rust] and [ms-vscode.cpptools].
 
 Quick Start
 -----------
 
 ### Debug Examples (VS Code, Windows)
 
-1) If you haven't already, install [VS2017](https://visualstudio.microsoft.com/vs/older-downloads/) w/ Desktop C++ Tools, [VS Code](https://code.visualstudio.com/), and [Git](https://git-scm.com/)
+1) If you haven't already, install [VS2017](https://visualstudio.microsoft.com/vs/older-downloads/) w/ Desktop C++ Tools, [VS Code], and [Git](https://git-scm.com/)
 2) Open a `cmd` prompt
     - Run `git clone --recurse-submodules https://github.com/MaulingMonkey/bgfx-rs.git` to get the full source code, or run `git submodule update --init` if you already had a partial checkout.
     - Run `code bgfx-rs` to open VS Code in the right folder.
@@ -85,5 +84,9 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 [bgfx]:   https://github.com/bkaradzic/bgfx             "bgfx"
 [docs]:   https://rhoot.github.io/bgfx-rs/bgfx/         "Bindings documentation"
 [glutin]: https://github.com/tomaka/glutin              "glutin"
-[rhoot/bgfx-rs]: https://github.com/rhoot/bgfx-rs       "rhoot/bgfx-rs"
-[ISC]:      LICENSE                                     "ISC License"
+[rhoot/bgfx-rs]:        https://github.com/rhoot/bgfx-rs    "rhoot/bgfx-rs"
+[ISC]:                  LICENSE                             "ISC License"
+[Git]:                  https://git-scm.com/                "Git"
+[VS Code]:              https://code.visualstudio.com/      "VS Code"
+[rust-lang.rust]:       https://marketplace.visualstudio.com/items?itemName=rust-lang.rust      "rust-lang.rust VS Code Extension"
+[ms-vscode.cpptools]:   https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools  "ms-vscode.cpptools VS Code Extension"
