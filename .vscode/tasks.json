@@ -36,5 +36,11 @@
         { "label": "cargo build --example=01-cubes --target=x86_64-pc-windows-msvc --release",   "windows": { "command": "cargo +stable-pc-windows-msvc build --example=01-cubes --target=x86_64-pc-windows-msvc --release" } },
         { "label": "cargo build --example=01-cubes --target=i686-pc-windows-msvc",               "windows": { "command": "cargo +stable-pc-windows-msvc build --example=01-cubes --target=i686-pc-windows-msvc            " } },
         { "label": "cargo build --example=01-cubes --target=i686-pc-windows-msvc --release",     "windows": { "command": "cargo +stable-pc-windows-msvc build --example=01-cubes --target=i686-pc-windows-msvc   --release" } },
+
+        // Misc. targets
+        { "label": "Open github.com/MaulingMonkey/bgfx-rs", "windows": { "command": "start \"\" https://github.com/MaulingMonkey/bgfx-rs" } },
+        { "label": "Open github.com/bkaradzic/bgfx",        "windows": { "command": "start \"\" https://github.com/bkaradzic/bgfx" } },
+        { "label": "Open bgfx-rs docs",                     "windows": { "command": "start \"\" https://rhoot.github.io/bgfx-rs/bgfx/" } },
+        { "label": "Open bgfx docs",                        "windows": { "command": "start \"\" https://bkaradzic.github.io/bgfx/bgfx.html" } },
     ],
 }
