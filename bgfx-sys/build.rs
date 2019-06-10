@@ -26,48 +26,10 @@ fn main() {
 }
 
 /// Builds the bgfx binaries for `msvc` targets.
-fn build_msvc(bitness: u32) {
-    let vs_version = env::var("VisualStudioVersion").expect("Visual Studio version not detected");
-    let platform = if bitness == 32 { "X86" } else { "X64" };
-
-    let vs_release = match vs_version.as_ref() {
-        "12.0" => "2013",
-        "14.0" => "2015",
-        "15.0" => "2017",
-        _ => panic!(format!("Unknown Visual Studio version: {:?}", vs_version)),
-    };
-
-    Command::new("bx/tools/bin/windows/genie.exe")
-        .current_dir("bgfx")
-        .arg("--with-dynamic-runtime")
-        .arg(format!("vs{}", vs_release))
-        .output()
-        .expect("Failed to generate project files");
-
-    let status = Command::new("MSBuild.exe")
-                     .current_dir("bgfx")
-                     .arg("/p:Configuration=Release")
-                     .arg(format!("/p:Platform={}", platform))
-                     .arg(format!(".build/projects/vs{}/bgfx.sln", vs_release))
-                     .status()
-                     .expect("Failed to build bgfx");
-
-    if status.code().unwrap() != 0 {
-        panic!("Failed to build bgfx");
-    }
-
-    let mut path = PathBuf::from(env::current_dir().unwrap());
-    path.push("bgfx");
-    path.push(".build");
-    path.push(format!("win{}_vs{}", bitness, vs_release));
-    path.push("bin");
-
-    println!("cargo:rustc-link-lib=static=bxRelease");
-    println!("cargo:rustc-link-lib=static=bimgRelease");
-    println!("cargo:rustc-link-lib=static=bgfxRelease");
-    println!("cargo:rustc-link-lib=gdi32");
-    println!("cargo:rustc-link-lib=user32");
-    println!("cargo:rustc-link-search=native={}", path.as_os_str().to_str().unwrap());
+fn build_msvc(_bitness: u32) {
+    let build_msvc_cmd_exit_code = Command::new("cmd").arg("/c").arg("build_msvc.cmd")
+        .status().expect("Failed to invoke build_msvc.cmd").code();
+    assert_eq!(build_msvc_cmd_exit_code, Some(0), "Failed to build BGFX");
 }
 
 /// Builds the bgfx binaries for makefile based targets.
