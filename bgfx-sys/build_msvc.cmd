@@ -34,6 +34,7 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 @echo cargo:rustc-link-lib=static=bgfx%BGFX_VSCONFIG%
 @echo cargo:rustc-link-lib=gdi32
 @echo cargo:rustc-link-lib=user32
+@echo cargo:rustc-link-lib=psapi
 @echo cargo:rustc-link-search=native=%~dp0\bgfx\.build\%BGFX_WINNN%_%BGFX_VS20NN%\bin
 
 :: Exit Successfully
