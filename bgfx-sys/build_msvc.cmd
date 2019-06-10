@@ -43,12 +43,18 @@ MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".bui
 
 :find-msvc
 @if defined VisualStudioVersion exit /b 0
-:: VS150COMNTOOLS only defined in developer command prompts, so search default install locations for VS2017
+:: VS150COMNTOOLS is only defined in developer command prompts, so search default install locations for VS2017
 @if defined ProgramFiles(x86) for /d %%e in ("%ProgramFiles(x86)%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
 @if defined ProgramFiles      for /d %%e in      ("%ProgramFiles%\Microsoft Visual Studio\2017\*") do call :find-msvc-2017 %%e && exit /b 0
-:: VS140COMNTOOLS defined in general cmd.exe instances
-@if defined VS140COMNTOOLS @call :find-msvc-at "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
-@if defined VS120COMNTOOLS @call :find-msvc-at "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
+:: VS140COMNTOOLS is sometimes defined in general cmd.exe instances, but not on appveyor?  (VS2015)
+@if defined VS140COMNTOOLS      call :find-msvc-at "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles(x86)   call :find-msvc-at "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles        call :find-msvc-at      "%ProgramFiles%\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" && exit /b 0
+:: VS2013
+@if defined VS120COMNTOOLS      call :find-msvc-at "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles(x86)   call :find-msvc-at "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
+@if defined ProgramFiles        call :find-msvc-at      "%ProgramFiles%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" && exit /b 0
+:: VS2012, 2010, 2008
 @echo Couldn't find MSVC installation to build BGFX with
 @exit /b 1
 
