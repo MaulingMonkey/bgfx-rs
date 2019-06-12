@@ -67,6 +67,18 @@ fn build_gmake(bitness: u32, profile: &str, platform: &str) {
         "-fPIC -DBGFX_CONFIG_MULTITHREADED=1"
     };
 
+    let cc = if let Ok(cc) = env::var("CC") {
+        vec!{format!("CC={}",cc)}
+    } else {
+        vec!{}
+    };
+
+    let cxx = if let Ok(cxx) = env::var("CXX") {
+        vec!{format!("CXX={}",cxx)}
+    } else {
+        vec!{}
+    };
+
     // Build bgfx
     let status = Command::new("make")
                      .env("CFLAGS", cflags)
@@ -75,6 +87,8 @@ fn build_gmake(bitness: u32, profile: &str, platform: &str) {
                      .arg(format!("bgfx/.build/projects/{}", project_name))
                      .arg(format!("config={}{}", profile, bitness))
                      .arg("verbose=1")
+                     .args(&cc)
+                     .args(&cxx)
                      .arg("bgfx")
                      .status()
                      .expect("Failed to build bgfx");
@@ -91,6 +105,8 @@ fn build_gmake(bitness: u32, profile: &str, platform: &str) {
                      .arg(format!("bgfx/.build/projects/{}", project_name))
                      .arg(format!("config={}{}", profile, bitness))
                      .arg("verbose=1")
+                     .args(&cc)
+                     .args(&cxx)
                      .arg("bimg")
                      .status()
                      .expect("Failed to build bimg");

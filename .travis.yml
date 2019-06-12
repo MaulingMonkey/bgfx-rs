@@ -16,8 +16,16 @@ matrix:
 
 addons:
     apt:
+        sources:
+          - ubuntu-toolchain-r-test
         packages:
           - build-essential
           - libgl1-mesa-dev
           - x11proto-core-dev
           - libx11-dev
+          - gcc-8
+          - g++-8
+
+before_install:
+  - export CC=gcc-8
+  - export CXX=g++-8
