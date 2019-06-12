@@ -15,6 +15,7 @@
 
 
 :: Autoconfigure
+@if not defined BGFX_GENIE_FLAGS set "BGFX_GENIE_FLAGS= "
 @call :infer-vcvarsall-arch     || exit /b 1
 @call :find-msvc                || exit /b 1
 @call :infer-bgfx-vs20nn        || exit /b 1
@@ -24,7 +25,7 @@
 
 :: Build
 @pushd "%~dp0\bgfx"
-..\bx\tools\bin\windows\genie.exe --with-dynamic-runtime %BGFX_VS20NN%                                              || exit /b 1
+..\bx\tools\bin\windows\genie.exe --with-dynamic-runtime %BGFX_GENIE_FLAGS% %BGFX_VS20NN%                           || exit /b 1
 MSBuild.exe /p:Configuration=%BGFX_VSCONFIG% /p:Platform=%BGFX_VSPLATFORM% ".build\projects\%BGFX_VS20NN%\bgfx.sln" || exit /b 1
 @popd
 

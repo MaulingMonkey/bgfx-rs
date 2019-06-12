@@ -7,12 +7,15 @@
     "type": "shell",
     "options": {
         "cwd": "${workspaceFolder}",
+        "env": { "RUST_BACKTRACE": "1" },
     },
     "tasks": [
         // Tasks for multiple platforms that depend on ambient rust configuration.
         { "group": "build", "label": "cargo check",             "command": "cargo check" },
         { "group": "build", "label": "cargo clean",             "command": "cargo clean" },
         { "group": "build", "label": "cargo doc",               "command": "cargo doc" },
+        { "group": "build", "label": "bindgen",                 "windows": { "command": "${workspaceFolder}\\bgfx-sys\\build_ffi.cmd" } },
+        { "group": "build", "label": "example assets",          "windows": { "command": "${workspaceFolder}\\examples\\build_assets.cmd" } },
 
         // Target specific windows builds.  Several of these will require you to run `rustup install target ...` per the `--target=...` flags bellow.
         // MSVC builds will also require MSVC C++ tools installed.
