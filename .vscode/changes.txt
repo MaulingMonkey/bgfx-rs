@@ -1,0 +1,9 @@
+Update bgfx/bimg/bx, adjust to new FFI bindings.
+
+API changes:
+- Added bgfx::TextureFormat
+- bgfx::reset now takes a TextureFormat
+- bgfx::init now takes an Init struct, or you can just call .init() on said struct.
+
+Example changes:
+- Breakpoint on panic instead of just having the thread silently die

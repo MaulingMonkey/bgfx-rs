@@ -29,12 +29,12 @@
 //! ```
 //!
 //! Once the platform data has been initialized, a new thread should be spawned to act as the main
-//! thread. This thread should call [`bgfx::init`] to initialize bgfx. The object returned by that
-//! function should be used to access bgfx API calls.
+//! thread. This thread should call [`bgfx::init`] or [`bgfx::Init::init`] to initialize bgfx. The
+//! object returned by that function should be used to access bgfx API calls.
 //!
 //! ```no_run
 //! std::thread::spawn(|| {
-//!     let bgfx = bgfx::init(bgfx::RendererType::Default, None, None)
+//!     let bgfx = bgfx::Init::default().init()
 //!         .expect("Failed to initialize bgfx");
 //!     // ...
 //! });
@@ -46,7 +46,7 @@
 //! ```no_run
 //! loop {
 //!     // This is probably also where you will want to pump the window event queue.
-//!     bgfx::render_frame();
+//!     bgfx::render_frame(-1);
 //! }
 //! ```
 //!

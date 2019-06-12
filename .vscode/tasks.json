@@ -11,9 +11,10 @@
     },
     "tasks": [
         // Tasks for multiple platforms that depend on ambient rust configuration.
-        { "group": "build", "label": "cargo check",             "command": "cargo check" },
         { "group": "build", "label": "cargo clean",             "command": "cargo clean" },
         { "group": "build", "label": "cargo doc",               "command": "cargo doc" },
+        { "group": "build", "label": "cargo check",             "command": "cargo +stable-pc-windows-msvc check --target=x86_64-pc-windows-msvc" },
+        { "group": "build", "label": "cargo test",              "command": "cargo +stable-pc-windows-msvc test --target=x86_64-pc-windows-msvc" },
         { "group": "build", "label": "bindgen",                 "windows": { "command": "${workspaceFolder}\\bgfx-sys\\build_ffi.cmd" } },
         { "group": "build", "label": "example assets",          "windows": { "command": "${workspaceFolder}\\examples\\build_assets.cmd" } },
 
