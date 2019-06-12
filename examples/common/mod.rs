@@ -42,7 +42,8 @@ impl EventQueue {
                          bgfx: &Bgfx,
                          width: &mut u16,
                          height: &mut u16,
-                         reset: bgfx::ResetFlags)
+                         reset: bgfx::ResetFlags,
+                         format: bgfx::TextureFormat)
                          -> bool {
         let mut should_close = false;
 
@@ -52,7 +53,7 @@ impl EventQueue {
                 Event::Size(w, h) => {
                     *width = w;
                     *height = h;
-                    bgfx.reset(w, h, reset);
+                    bgfx.reset(w, h, reset, format);
                 }
             }
         }
@@ -129,9 +130,26 @@ fn init_bgfx_platform(window: &Window) {
         .unwrap();
 }
 
+type BOOL = i32;
+#[cfg(windows)]
+#[link(name = "kernel32")]
+extern "system" {
+    fn DebugBreak();
+    fn IsDebuggerPresent() -> BOOL;
+}
+
 pub fn run_example<M>(width: u16, height: u16, main: M)
     where M: Send + 'static + FnOnce(EventQueue)
 {
+    #[cfg(windows)]
+    std::panic::set_hook(Box::new(|_|{
+        unsafe {
+            if IsDebuggerPresent() != 0 {
+                DebugBreak();
+            }
+        }
+    }));
+
     let window = WindowBuilder::new()
                      .with_dimensions(width as u32, height as u32)
                      .with_gl(GlRequest::Specific(Api::OpenGl, (3, 1)))
@@ -150,7 +168,7 @@ pub fn run_example<M>(width: u16, height: u16, main: M)
     init_bgfx_platform(&window);
 
     // Initialize this thread as the render thread by pumping it once *before* calling bgfx::init.
-    bgfx::render_frame();
+    bgfx::render_frame(-1);
 
     // Spawn a new thread to use as the main thread.
     let main_thread = thread::spawn(move || {
@@ -159,11 +177,11 @@ pub fn run_example<M>(width: u16, height: u16, main: M)
 
     // Pump window events until the window is closed.
     while !process_events(&window, &event_tx) {
-        bgfx::render_frame();
+        bgfx::render_frame(-1);
     }
 
     // Pump the render thread until the main thread has shut down.
-    while bgfx::render_frame() != RenderFrame::NoContext {
+    while bgfx::render_frame(-1) != RenderFrame::NoContext {
         thread::sleep(Duration::from_millis(1));
     }
 

@@ -67,6 +67,7 @@ struct Cubes<'a> {
     height: u16,
     debug: DebugFlags,
     reset: ResetFlags,
+    format: TextureFormat,
     vbh: Option<VertexBuffer<'a>>,
     ibh: Option<IndexBuffer<'a>>,
     program: Option<Program<'a>>,
@@ -85,6 +86,7 @@ impl<'a> Cubes<'a> {
             height: 0,
             debug: DEBUG_NONE,
             reset: RESET_NONE,
+            format: TextureFormat::RGB8,
             vbh: None,
             ibh: None,
             program: None,
@@ -102,7 +104,7 @@ impl<'a> Cubes<'a> {
         // This is where the C++ example would call bgfx::init(). In rust we move that out of this
         // object due to lifetimes: The Cubes type cannot own both the Bgfx object, and guarantee
         // that its members are destroyed before the Bgfx object.
-        self.bgfx.reset(self.width, self.height, self.reset);
+        self.bgfx.reset(self.width, self.height, self.reset, self.format);
 
         // Enable debug text.
         self.bgfx.set_debug(self.debug);
@@ -135,7 +137,7 @@ impl<'a> Cubes<'a> {
     }
 
     fn update(&mut self) -> bool {
-        if !self.events.handle_events(&self.bgfx, &mut self.width, &mut self.height, self.reset) {
+        if !self.events.handle_events(&self.bgfx, &mut self.width, &mut self.height, self.reset, self.format) {
             let now = PreciseTime::now();
             let frame_time = self.last.unwrap_or(now).to(now);
             self.last = Some(now);
@@ -208,7 +210,10 @@ impl<'a> Cubes<'a> {
 }
 
 fn example(events: EventQueue) {
-    let bgfx = bgfx::init(RendererType::Default, None, None).unwrap();
+    let bgfx = bgfx::Init::default()
+        .with_renderer(RendererType::OpenGL)
+        .with_resolution(Resolution::default().with_format(TextureFormat::RGB8).with_width(1280).with_height(720))
+        .init().unwrap();
     let mut cubes = Cubes::new(&bgfx, events);
     cubes.init();
     while cubes.update() {}

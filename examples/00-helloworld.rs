@@ -17,9 +17,12 @@ fn example(events: EventQueue) {
     let mut height: u16 = 720;
     let debug = DEBUG_TEXT;
     let reset = RESET_VSYNC;
+    let format = TextureFormat::RGBA8;
 
-    let bgfx = bgfx::init(RendererType::Default, None, None).unwrap();
-    bgfx.reset(width, height, reset);
+    let bgfx = bgfx::Init::default()
+        .with_renderer(RendererType::OpenGL)
+        .with_resolution(Resolution::default().with_format(format).with_width(width as u32).with_height(height as u32))
+        .init().unwrap();
 
     // Enable debug text.
     bgfx.set_debug(debug);
@@ -28,7 +31,7 @@ fn example(events: EventQueue) {
     let clear = CLEAR_COLOR | CLEAR_DEPTH;
     bgfx.set_view_clear(0, clear, 0x303030ff, 1.0_f32, 0);
 
-    while !events.handle_events(&bgfx, &mut width, &mut height, reset) {
+    while !events.handle_events(&bgfx, &mut width, &mut height, reset, format) {
         // Set view 0 default viewport.
         bgfx.set_view_rect(0, 0, 0, width, height);
 
